@@ -11,6 +11,17 @@ if [[ $# -eq 1 ]]; then
   exec "$@"
 
 else
-  echo "default command missing"
-  exit 1
+  function anywait()
+  {
+    for pid in "$@"; do
+      while kill -0 "$pid"; do
+        sleep 0.5
+      done
+    done
+  }
+
+  trap "postfix stop" SIGINT SIGTERM
+  trap "postfix reload" SIGHUP
+  postfix start
+  anywait $(< /var/spool/postfix/pid/master.pid)
 fi
