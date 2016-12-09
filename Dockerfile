@@ -16,5 +16,4 @@ COPY bin/entrypoint.sh /usr/bin/
 RUN chmod 755 /usr/bin/entrypoint.sh
 ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
-
-
+EXPOSE 25

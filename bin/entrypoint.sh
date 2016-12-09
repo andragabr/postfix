@@ -11,10 +11,10 @@ if [[ $# -eq 1 ]]; then
   exec "$@"
 
 else
-  function anywait()
+  function waitpid()
   {
     for pid in "$@"; do
-      while kill -0 "$pid"; do
+      while kill -0 "$pid" 2> /dev/null; do
         sleep 0.5
       done
     done
@@ -23,5 +23,5 @@ else
   trap "postfix stop" SIGINT SIGTERM
   trap "postfix reload" SIGHUP
   postfix start
-  anywait $(< /var/spool/postfix/pid/master.pid)
+  waitpid $(< /var/spool/postfix/pid/master.pid)
 fi
