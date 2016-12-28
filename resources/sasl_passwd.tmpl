@@ -1,0 +1,3 @@
+{{ if .sendgrid.username }}
+{{ .relayHost }} {{ .sendgrid.username }}:{{ .sendgrid.password }}
+{{ end }}

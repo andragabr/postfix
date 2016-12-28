@@ -19,6 +19,8 @@ if [[ $# -ne 0 ]]; then
 else
   trap "postfix stop" SIGINT SIGTERM
   trap "postfix reload" SIGHUP
+  /etc/init.d/rsyslog start
   postfix start
+  tail -f /var/log/syslog &
   waitpid $(< /var/spool/postfix/pid/master.pid)
 fi

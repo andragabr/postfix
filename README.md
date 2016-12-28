@@ -3,7 +3,20 @@ Postfix docker image to relay emails
 
 ## Run a relay emails server
 
-`docker run -d kaigara/postfix`
+Example of relay.yml configuration to relay emails to SendGrid:
+
+    ---
+    hostname: "relay"
+    fqdn: "relay.example.com"
+    defaultUser: "root"
+    relayHost: "[smtp.sendgrid.net]:2525"
+    sendgrid:
+      username: "apikey"
+      password: "SG.FnpawADeziUlfOcNxmSIPHg.PmBTZuMbngSNQJqLAVwyXFvOxelDUtYWcCRozHkaiIGr"
+
+Run the relay as follow:
+
+`docker run -v $(pwd)/relay.yml:/etc/kaigara/metadata/relay.yml -d kaigara/postfix`
 
 ## Credits
 

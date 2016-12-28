@@ -23,6 +23,13 @@ smtpd_tls_key_file=/etc/ssl/private/ssl-cert-snakeoil.key
 smtpd_use_tls=yes
 smtpd_tls_session_cache_database = btree:${data_directory}/smtpd_scache
 smtp_tls_session_cache_database = btree:${data_directory}/smtp_scache
+{{ if .sendgrid.username }}
+smtp_tls_security_level = encrypt
+smtp_sasl_auth_enable = yes
+smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
+smtp_sasl_security_options = noanonymous
+{{ end }}
+header_size_limit = 4096000
 
 # See /usr/share/doc/postfix/TLS_README.gz in the postfix-doc package for
 # information on enabling SSL in the smtp client.
@@ -31,9 +38,13 @@ smtpd_relay_restrictions = permit_mynetworks permit_sasl_authenticated defer_una
 myhostname = {{ .fqdn }}
 alias_maps = hash:/etc/aliases
 alias_database = hash:/etc/aliases
-mydestination = /etc/mailname, {{ .hostname }}, {{ .fqdn }}, localhost
-relayhost = 
+mydestination = {{ .hostname }}, {{ .fqdn }}, localhost
+relayhost = {{ .relayHost }}
 mynetworks = 0.0.0.0/0
 mailbox_size_limit = 0
 recipient_delimiter = +
 inet_interfaces = all
+debug_peer_list = 127.0.0.1
+default_transport = smtp
+relay_transport = relay
+inet_protocols = ipv4
