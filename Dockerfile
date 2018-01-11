@@ -1,6 +1,6 @@
-FROM debian
+FROM debian:8
 
-MAINTAINER Camille Meulien <camille.meulien@gmail.com>
+MAINTAINER Camille Meulien <cmeulien@heliostech.fr>
 
 RUN apt-get update \
     && apt-get install -y postfix mailutils rsyslog curl
@@ -12,6 +12,6 @@ COPY ./resources/ /etc/kaigara/resources/
 
 COPY bin/entrypoint.sh /usr/bin/
 RUN chmod 755 /usr/bin/entrypoint.sh
-ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 
+ENTRYPOINT ["/usr/bin/entrypoint.sh"]
 EXPOSE 25
